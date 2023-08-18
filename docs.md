@@ -29,7 +29,7 @@ In general, it is convenient to have all tensors stored as `sp.Array()` objects 
 
 We can raise the indices on the metric using `ev.Inverse(gll)`:
 
----
+![metinv](metricInverse.png)
 
 With our metric and coordinate system, a line element is obtained with `ev.LineltFromMetric(gll,Xu)`:
 
