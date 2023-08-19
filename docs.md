@@ -1,3 +1,4 @@
+# Setting Up
 Once `EinsteinVariation.py` is downloaded in an appropriate directory, open a Python editor and import the following:
 
 ```Python
@@ -18,7 +19,7 @@ We'll use upper case T and P to represent the Greek letters theta and phi respec
 M,a=sp.symbols('M a', real=True, positive=True)
 ```
 
-We can now define (i) a list of coordinates and (ii) a covariant metric. For Minkowski spacetime in spherical coordinates, we would do:
+We can now define (i) a list of coordinates and (ii) a covariant metric tensor. For Minkowski spacetime in spherical coordinates, we would do:
 
 ```Python
 Xu=sp.Array([t,r,T,P])  
@@ -31,7 +32,11 @@ We can raise the indices on the metric using `ev.Inverse(gll)`:
 
 ![metinv](metricInverse.png)
 
+# Line Elements
+
 With our metric and coordinate system, a line element is obtained with `ev.LineltFromMetric(gll,Xu)`:
+
+![linelt](linelt.png)
 
 Of course, we can work the other way:
 
@@ -42,19 +47,21 @@ ev.MetricFromDS(ds,Xu)
 
 returns the original Minkowski metric in spherical coordinates.
 
----
+# Christoffel Symbols
 
 Now for the main event. With a metric an list of coordinates, we can calculate the Christoffel symbol of the first kind using `GetCClll(gll,Xu)`:
 
----
+![cclll](cclll.png)
 
-The 'lll' indicates three lower indices. `ev.GetCCull(gll,Xu)` raises the first index to get the Christoffel symbol of the second kind. Individual entries can be obtained using `ev.GetCCull(gll,Xu)[1,2,2]` keeping in mind that Python indices start at 0:
+The 'lll' indicates three lower indices. `ev.GetCCull(gll,Xu)` raises the first index to get the Christoffel symbol of the second kind. Individual entries can be obtained (keeping in mind that Python indices start at 0) using  `ev.GetCCull(gll,Xu)[1,2,2]`: 
 
----
+![ccull122](ccull122.png)
 
-`ev.GetRiemann(gll,Xu)` returns the fourth-rank Riemann tensor in up-low-low-low form. All entries are zero since spacetime is flat:
+# Riemann and Ricci Tensors
 
----
+`ev.GetRiemann(gll,Xu)` returns the fourth-rank Riemann tensor in up-low-low-low form. All entries are zero since the spacetime is flat:
+
+![flatRiemann](flatRulll.png)
 
 On the surface of a sphere, the metric and coordinates are given by
 
@@ -65,9 +72,9 @@ sphere_surface_Xu = sp.Array([T, P])
 
 For this manifold the `ev.GetRiemann(sphere_surface_gll,sphere_surface_Xu)` returns
 
----
+![sphereRulll](sphereRulll.png)
 
-`sympy` comes with in-built tensorproduct and tensorcontraction capability. We can thus lower an index on the Riemann tensor via
+`sympy` comes with an in-built tensor product and tensor contraction capability. We can thus lower an index on the Riemann tensor via
 
 ```Python
 Rulll=ev.GetRiemann(sphere_surface_gll,sphere_surface_Xu)
@@ -75,21 +82,23 @@ prod=sp.tensorproduct(sphere_surface_gll,Rulll)
 Rllll=sp.tensorcontraction(prod,(0,2))
 Rlll
 ```
----
+![sphereRllll](sphereRllll.png)
 
 Here, `sp.tensorproduct(sphere_surface_gll,Rulll)` creates a rank-six tensor: two indices from the metric and four from the Riemann tensor. Calling `sp.tensorcontraction(prod,(0,2))` contracts the 0 and 2 indices of `prod`, resulting in a fully covariant form for the Riemann tensor.
 
 The Ricci tensor is a contraction of the Riemann tensor, and can be obtained using `ev.GetRicci(sphere_surface_gll,sphere_surface_Xu)`:
 
----
+![Ricci](ricci.png)
 
 And the Ricci scalar is a contraction of this object with the metric, `ev.GetRicciS((sphere_surface_gll,sphere_surface_Xu)`:
 
----
+![RicciS](ricciS.png)
 
+# Kerr Metric
 We can compute most of these expressions for the Kerr metric in Boyer-Lindquist coordinates. Use `GetKerrgll(M,a,r,T)` (noting that we initialized `M` and `a` as math variables earlier) to get
 
----
+
+![kerrmetric](kerr.png)
 
 Unfortunately, Python is not equpped to simplify large expressions, so `ev.GetRiemmann()`, `ev.GetRicci()`, and `ev.GetRicciS()` will output incomprehensible results. They are all zero in disguise. You can make a special case assumption to get Python to output the right results:
 
