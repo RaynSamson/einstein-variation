@@ -44,12 +44,11 @@ Of course, we can work the other way:
 ds=ev.LineltFromMetric(gll,Xu)
 ev.MetricFromDS(ds,Xu)
 ```
-
 returns the original Minkowski metric in spherical coordinates.
 
 # Christoffel Symbols
 
-Now for the main event. With a metric an list of coordinates, we can calculate the Christoffel symbol of the first kind using `GetCClll(gll,Xu)`:
+Now for the main event. With a metric an list of coordinates, we can calculate the Christoffel symbol of the first kind using `ev.GetCClll(gll,Xu)`:
 
 ![cclll](cclll.png)
 
@@ -90,17 +89,17 @@ The Ricci tensor is a contraction of the Riemann tensor, and can be obtained usi
 
 ![Ricci](ricci.png)
 
-And the Ricci scalar is a contraction of this object with the metric, `ev.GetRicciS((sphere_surface_gll,sphere_surface_Xu)`:
+And the Ricci scalar is a contraction of this object with the metric, `ev.GetRicciS(sphere_surface_gll,sphere_surface_Xu)`:
 
 ![RicciS](ricciS.png)
 
 # Kerr Metric
-We can compute most of these expressions for the Kerr metric in Boyer-Lindquist coordinates. Use `GetKerrgll(M,a,r,T)` (noting that we initialized `M` and `a` as math variables earlier) to get
+We can compute most of these expressions for the Kerr metric in Boyer-Lindquist coordinates. Use `ev.GetKerrgll(M,a,r,T)` (noting that we initialized `M` and `a` as math variables earlier) to get
 
 
 ![kerrmetric](kerr.png)
 
-Unfortunately, Python is not equpped to simplify large expressions, so `ev.GetRiemmann()`, `ev.GetRicci()`, and `ev.GetRicciS()` will output incomprehensible results. They are all zero in disguise. You can make a special case assumption to get Python to output the right results:
+Unfortunately, Python is not equipped to simplify large expressions, so `ev.GetRiemmann()`, `ev.GetRicci()`, and `ev.GetRicciS()` will output incomprehensible results. They are all zero in disguise. You can make a special case assumption to get Python to output the right results:
 
 ```Python
 kerrgll=ev.GetKerrgll(M,a,r,T).subs(a,0)
